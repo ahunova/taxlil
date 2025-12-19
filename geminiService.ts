@@ -1,6 +1,6 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
-import { IMRaDResult, GrammarFix } from "./types";
+import { IMRaDResult, GrammarFix, PlagiarismResult } from "./types";
 
 // Always use process.env.API_KEY directly for initialization
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
@@ -9,7 +9,7 @@ export const analyzeIMRaD = async (text: string): Promise<IMRaDResult[]> => {
   const response = await ai.models.generateContent({
     model: 'gemini-3-pro-preview',
     contents: `Quyidagi akademik matnni IMRaD (Kirish, Metodlar, Natijalar va Muhokama) strukturasi bo'yicha tahlil qiling. 
-    DSc darajasidagi dissertatsiyaga xos bo'lgan bo'limlarni aniqlang, ishonchlilik ballarini bering va yetishmayotgan elementlar bo'yicha tavsiyalar bering.
+    PhD darajasidagi dissertatsiyaga xos bo'langan bo'limlarni aniqlang, ishonchlilik ballarini bering va yetishmayotgan elementlar bo'yicha tavsiyalar bering.
     DIQQAT: Barcha javoblar (section nomlari, suggestions va missingElements) O'zbek tilida bo'lishi shart.
     Matn: ${text.substring(0, 5000)}`,
     config: {
@@ -53,6 +53,41 @@ export const monitorGrammar = async (text: string): Promise<GrammarFix[]> => {
           },
           required: ["original", "suggestion", "explanation", "severity"]
         }
+      }
+    }
+  });
+  return JSON.parse(response.text);
+};
+
+export const checkPlagiarism = async (text: string): Promise<PlagiarismResult> => {
+  const response = await ai.models.generateContent({
+    model: 'gemini-3-pro-preview',
+    contents: `Quyidagi akademik matnni originallik darajasini tekshiring. 
+    Bu matn boshqa ilmiy manbalarga o'xshashmi yoki yo'qmi, shuni tahlil qiling. 
+    Agar o'xshashlik topilsa, uni qanday o'zgartirish (parafraz) bo'yicha tavsiya bering.
+    DIQQAT: "verdict" va "suggestion" qismlari O'zbek tilida bo'lishi shart.
+    Matn: ${text.substring(0, 4000)}`,
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: Type.OBJECT,
+        properties: {
+          originalityScore: { type: Type.NUMBER, description: "0 dan 100 gacha bo'lgan originallik foizi" },
+          verdict: { type: Type.STRING, description: "Umumiy ilmiy xulosa" },
+          matches: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.OBJECT,
+              properties: {
+                text: { type: Type.STRING, description: "O'xshash deb topilgan qism" },
+                source: { type: Type.STRING, description: "Taxminiy manba yoki manba turi" },
+                similarity: { type: Type.NUMBER },
+                suggestion: { type: Type.STRING, description: "Originallikni oshirish uchun o'zbekcha tavsiya" }
+              }
+            }
+          }
+        },
+        required: ["originalityScore", "verdict", "matches"]
       }
     }
   });

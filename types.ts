@@ -8,7 +8,8 @@ export enum ModuleType {
   SCIENTIFIC_JUSTIFICATION = 'SCIENTIFIC_JUSTIFICATION',
   BACKEND_LOGIC = 'BACKEND_LOGIC',
   ANALYTICS = 'ANALYTICS',
-  THESIS_CHAPTER = 'THESIS_CHAPTER'
+  CONTACT_CREATOR = 'CONTACT_CREATOR',
+  ANTI_PLAGIARISM = 'ANTI_PLAGIARISM'
 }
 
 export interface IMRaDResult {
@@ -23,6 +24,17 @@ export interface GrammarFix {
   suggestion: string;
   explanation: string;
   severity: 'low' | 'medium' | 'high';
+}
+
+export interface PlagiarismResult {
+  originalityScore: number;
+  matches: {
+    text: string;
+    source: string;
+    similarity: number;
+    suggestion: string;
+  }[];
+  verdict: string;
 }
 
 export interface DOIMetadata {

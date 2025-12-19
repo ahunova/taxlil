@@ -10,32 +10,22 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
   const [recentGrants, setRecentGrants] = useState<GrantOpportunity[]>([]);
 
   useEffect(() => {
-    // Mocking the latest 3 grants from the RSS stream
     const mockGrants: GrantOpportunity[] = [
       {
-        id: '1',
-        title: "Iqlim o'zgarishi va barqaror qishloq xo'jaligi",
-        agency: 'Horizon Europe',
-        deadline: '2024-12-15',
-        amount: '€2,500,000',
+        id: 'uz-1',
+        title: "Yosh olimlar uchun fundamental tadqiqotlar loyihasi",
+        agency: 'Innovatsiya Agentligi',
+        deadline: '2025-02-15',
+        amount: '600M UZS',
         link: '#',
         description: '...'
       },
       {
-        id: '2',
-        title: "DSc tadqiqotchilari uchun davlat grantlari",
-        agency: 'Innovatsiya Vazirligi',
-        deadline: '2024-11-20',
-        amount: '500M UZS',
-        link: '#',
-        description: '...'
-      },
-      {
-        id: '3',
-        title: "Fulbright Visiting Scholar Program",
-        agency: 'US Embassy',
-        deadline: '2025-01-10',
-        amount: 'Full Fund',
+        id: 'uz-2',
+        title: '"Olimpa" ilmiy loyihalar tanlovi',
+        agency: 'Yoshlar Akademiyasi',
+        deadline: '2024-12-30',
+        amount: '100M UZS',
         link: '#',
         description: '...'
       }
@@ -44,103 +34,180 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
   }, []);
 
   return (
-    <div className="space-y-6">
-      <div className="col-span-full bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-950 p-10 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden">
-        <div className="relative z-10">
-          <h2 className="text-4xl lg:text-5xl font-bold mb-4 serif leading-tight">Akademik Intellektual <br/>Tizimga Xush Kelibsiz</h2>
-          <p className="text-blue-100/80 text-lg max-w-2xl mb-6">
-            DSc darajasidagi tadqiqotchilar uchun yagona kognitiv ekotizim. 
-            Ilmiy ishingizni IMRaD standartiga moslang va global grantlar oqimini real vaqtda kuzating.
+    <div className="space-y-12 animate-in fade-in duration-700">
+      {/* 1. Immersive Hero Section */}
+      <section className="relative h-[500px] w-full rounded-[3rem] overflow-hidden shadow-2xl group">
+        <img 
+          src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=1600&auto=format&fit=crop" 
+          alt="Science Hub" 
+          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-[10s]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/60 to-transparent"></div>
+        <div className="relative z-10 h-full flex flex-col justify-center px-12 lg:px-20 max-w-3xl">
+          <span className="inline-block px-4 py-1.5 bg-blue-600 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-full mb-6 shadow-lg shadow-blue-500/20">
+            PhD InnoVision Intelligence
+          </span>
+          <h2 className="text-5xl lg:text-7xl font-bold text-white leading-[1.1] mb-8 tracking-tighter">
+            Ilm-fanni <br/> <span className="text-blue-400">vizuallashgan</span> tahlili
+          </h2>
+          <p className="text-slate-200 text-xl leading-relaxed mb-10 opacity-90 font-medium">
+            Tadqiqotingiz uchun eng kuchli AI vositalari yagona ekotizimda. IMRaD tahlilidan tortib O'zbekistondagi eng nufuzli grantlargacha.
           </p>
-          <div className="flex gap-4">
-            <button 
-              onClick={() => onNavigate(ModuleType.SCIENTIFIC_JUSTIFICATION)}
-              className="bg-white text-slate-900 px-6 py-3 rounded-2xl font-bold text-sm hover:bg-blue-50 transition-all shadow-xl shadow-blue-500/20"
-            >
-              Ilmiy Asosnoma
-            </button>
+          <div className="flex flex-wrap gap-4">
             <button 
               onClick={() => onNavigate(ModuleType.IMRAD_ANALYZER)}
-              className="bg-blue-600/30 border border-blue-400/30 backdrop-blur-md text-white px-6 py-3 rounded-2xl font-bold text-sm hover:bg-blue-600/50 transition-all"
+              className="bg-white text-slate-900 px-10 py-4 rounded-2xl font-black hover:bg-blue-600 hover:text-white transition-all shadow-xl hover:-translate-y-1"
             >
-              Tahlilni Boshlash
+              Tahlilni boshlash
+            </button>
+            <button 
+              onClick={() => onNavigate(ModuleType.SCIENTIFIC_JUSTIFICATION)}
+              className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-10 py-4 rounded-2xl font-bold hover:bg-white/20 transition-all"
+            >
+              PhD Metodologiya
             </button>
           </div>
         </div>
-        {/* Abstract shapes for aesthetics */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 blur-[100px] rounded-full -mr-32 -mt-32"></div>
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/10 blur-[80px] rounded-full -ml-32 -mb-32"></div>
-      </div>
+      </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group" onClick={() => onNavigate(ModuleType.IMRAD_ANALYZER)}>
-          <div className="h-14 w-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">📑</div>
-          <h3 className="font-bold text-lg text-slate-800 mb-2">IMRaD Analizi</h3>
-          <p className="text-slate-500 text-xs leading-relaxed">Ilmiy matn segmentatsiyasi va mantiqiy validatsiya.</p>
+      {/* 2. Visual Navigation Grid - Now with full images */}
+      <section className="space-y-8">
+        <div className="flex items-center gap-4 px-2">
+           <div className="h-px flex-1 bg-slate-200"></div>
+           <h3 className="text-xs font-black uppercase text-slate-400 tracking-[0.3em]">Xizmatlar katalogi</h3>
+           <div className="h-px flex-1 bg-slate-200"></div>
         </div>
-
-        <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group" onClick={() => onNavigate(ModuleType.GRAMMAR_MONITOR)}>
-          <div className="h-14 w-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">✍️</div>
-          <h3 className="font-bold text-lg text-slate-800 mb-2">Grammatika</h3>
-          <p className="text-slate-500 text-xs leading-relaxed">Akademik stil va terminologik monitoring.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {[
+            { 
+              type: ModuleType.IMRAD_ANALYZER, 
+              title: 'IMRaD Analitika', 
+              desc: 'Matn strukturasini avtomatik validatsiya qilish',
+              img: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=600&h=800&auto=format&fit=crop'
+            },
+            { 
+              type: ModuleType.GRAMMAR_MONITOR, 
+              title: 'Uslub Monitoringi', 
+              desc: 'Akademik ohang va grammatik mukammallik',
+              img: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=600&h=800&auto=format&fit=crop'
+            },
+            { 
+              type: ModuleType.DOI_IDENTIFIER, 
+              title: 'DOI Identifikatsiyasi', 
+              desc: 'Raqamli kutubxona va iqtiboslar bazasi',
+              img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=600&h=800&auto=format&fit=crop'
+            },
+            { 
+              type: ModuleType.GRANT_HUB, 
+              title: 'Grantlar Oqimi', 
+              desc: 'O\'zbekiston va global moliyaviy imkoniyatlar',
+              img: 'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=600&h=800&auto=format&fit=crop'
+            },
+          ].map((item) => (
+            <button 
+              key={item.title}
+              onClick={() => onNavigate(item.type)}
+              className="group relative h-[450px] w-full rounded-[2.5rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+            >
+              <img src={item.img} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={item.title} />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent"></div>
+              <div className="absolute inset-0 p-8 flex flex-col justify-end text-left">
+                <h4 className="text-2xl font-bold text-white mb-2 transform group-hover:-translate-y-1 transition-transform">{item.title}</h4>
+                <p className="text-slate-300 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
+                  {item.desc}
+                </p>
+                <div className="mt-6 w-12 h-1 bg-blue-500 rounded-full group-hover:w-full transition-all duration-700"></div>
+              </div>
+            </button>
+          ))}
         </div>
+      </section>
 
-        <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group" onClick={() => onNavigate(ModuleType.DOI_IDENTIFIER)}>
-          <div className="h-14 w-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">🔗</div>
-          <h3 className="font-bold text-lg text-slate-800 mb-2">DOI Search</h3>
-          <p className="text-slate-500 text-xs leading-relaxed">Crossref API orqali bibliometrik identifikatsiya.</p>
+      {/* 3. Integration Showcase - Large Image with Info */}
+      <section className="bg-white rounded-[3rem] border border-slate-200 overflow-hidden shadow-sm flex flex-col lg:flex-row items-stretch">
+        <div className="lg:w-1/2 relative min-h-[400px]">
+          <img 
+            src="https://images.unsplash.com/photo-1524178232363-1fb280d91f39?q=80&w=800&auto=format&fit=crop" 
+            className="absolute inset-0 w-full h-full object-cover" 
+            alt="University"
+          />
+          <div className="absolute inset-0 bg-blue-900/20"></div>
         </div>
-
-        <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group" onClick={() => onNavigate(ModuleType.GRANT_HUB)}>
-          <div className="h-14 w-14 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">💰</div>
-          <h3 className="font-bold text-lg text-slate-800 mb-2">Grantlar</h3>
-          <p className="text-slate-500 text-xs leading-relaxed">Global RSS monitoring va prediktiv saralash.</p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-white p-8 rounded-[2rem] shadow-sm border border-slate-200">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-xl font-bold text-slate-800">So'nggi Grant Imkoniyatlari (Live Feed)</h3>
-            <button onClick={() => onNavigate(ModuleType.GRANT_HUB)} className="text-blue-600 text-sm font-bold hover:underline">Hammasini ko'rish</button>
+        <div className="flex-1 p-12 lg:p-20 flex flex-col justify-center">
+          <div className="flex items-center gap-3 mb-8">
+             <div className="h-12 w-12 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600 text-2xl shadow-inner">🏛️</div>
+             <div>
+                <p className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Local Ecosystem</p>
+                <h3 className="text-3xl font-bold text-slate-900">O'zbekiston Grantlari</h3>
+             </div>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-6">
             {recentGrants.map(grant => (
-              <div key={grant.id} className="flex items-center gap-4 p-4 rounded-2xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all cursor-pointer">
-                <div className="h-12 w-12 bg-slate-900 rounded-xl flex items-center justify-center text-white font-bold shrink-0">{grant.agency[0]}</div>
+              <div key={grant.id} className="flex items-center justify-between p-6 rounded-[2rem] bg-slate-50 border border-slate-100 hover:bg-white hover:shadow-xl hover:shadow-slate-200/50 transition-all cursor-pointer group">
                 <div className="flex-1 min-w-0">
-                  <h4 className="font-bold text-slate-800 truncate">{grant.title}</h4>
-                  <p className="text-xs text-slate-500">{grant.agency} • Muddat: {grant.deadline}</p>
+                  <h4 className="font-bold text-slate-800 truncate group-hover:text-blue-600 transition-colors">{grant.title}</h4>
+                  <p className="text-xs text-slate-400 font-medium uppercase mt-1">{grant.agency}</p>
                 </div>
-                <div className="text-right">
-                  <p className="font-bold text-emerald-600 text-sm">{grant.amount}</p>
+                <div className="text-right ml-6">
+                   <p className="text-lg font-black text-slate-900">{grant.amount}</p>
+                   <p className="text-[10px] font-bold text-slate-400">Muddat: {grant.deadline}</p>
                 </div>
               </div>
             ))}
           </div>
+          <button 
+            onClick={() => onNavigate(ModuleType.GRANT_HUB)}
+            className="mt-10 text-blue-600 font-bold flex items-center gap-2 hover:translate-x-2 transition-transform"
+          >
+            Barcha mahalliy va xalqaro grantlar <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+          </button>
+        </div>
+      </section>
+
+      {/* 4. Statistics & Analytics - Visualization */}
+      <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 relative h-[400px] rounded-[3rem] overflow-hidden bg-slate-900 shadow-2xl group">
+           <img 
+            src="https://images.unsplash.com/photo-1551288049-bbbda5366a7a?q=80&w=800&auto=format&fit=crop" 
+            className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:scale-105 transition-transform duration-[10s]" 
+            alt="Data"
+           />
+           <div className="absolute inset-0 p-12 flex flex-col justify-between">
+              <div>
+                <h3 className="text-3xl font-bold text-white mb-2">Tadqiqot Analitikasi</h3>
+                <p className="text-slate-400 max-w-md leading-relaxed">PhD darajasidagi barcha ilmiy ishlaringizning mantiqiy va uslubiy holatini yagona datchiklarda kuzating.</p>
+              </div>
+              <div className="grid grid-cols-3 gap-8">
+                <div>
+                   <span className="block text-4xl font-black text-blue-400 mb-1">94%</span>
+                   <span className="text-[10px] uppercase font-bold text-slate-500 tracking-widest">Akademik Stil</span>
+                </div>
+                <div>
+                   <span className="block text-4xl font-black text-emerald-400 mb-1">82%</span>
+                   <span className="text-[10px] uppercase font-bold text-slate-500 tracking-widest">IMRaD Validatsiya</span>
+                </div>
+                <div>
+                   <span className="block text-4xl font-black text-amber-400 mb-1">12</span>
+                   <span className="text-[10px] uppercase font-bold text-slate-500 tracking-widest">Yangi Grantlar</span>
+                </div>
+              </div>
+           </div>
         </div>
 
-        <div className="bg-indigo-600 p-8 rounded-[2rem] text-white shadow-xl shadow-indigo-100 relative overflow-hidden">
-          <h3 className="text-xl font-bold mb-4 relative z-10">DSc Analitika</h3>
-          <div className="space-y-4 relative z-10">
-            <div className="p-4 bg-white/10 backdrop-blur-md rounded-2xl border border-white/10">
-              <p className="text-xs text-indigo-100 uppercase font-bold tracking-widest mb-1">IMRaD Score</p>
-              <div className="flex items-end gap-2">
-                <span className="text-3xl font-bold">84%</span>
-                <span className="text-xs text-emerald-300 mb-1">▲ 12%</span>
-              </div>
-            </div>
-            <div className="p-4 bg-white/10 backdrop-blur-md rounded-2xl border border-white/10">
-              <p className="text-xs text-indigo-100 uppercase font-bold tracking-widest mb-1">Grammatik Aniqlik</p>
-              <div className="flex items-end gap-2">
-                <span className="text-3xl font-bold">92%</span>
-                <span className="text-xs text-indigo-200 mb-1">Stabil</span>
-              </div>
-            </div>
+        <div className="bg-gradient-to-br from-blue-600 to-indigo-800 rounded-[3rem] p-12 text-white shadow-2xl flex flex-col justify-between items-center text-center relative overflow-hidden group">
+          <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-all duration-1000"></div>
+          <div className="relative z-10">
+            <div className="text-6xl mb-6 animate-bounce">🎓</div>
+            <h4 className="text-2xl font-bold mb-4">PhD Portfolio</h4>
+            <p className="text-blue-100 text-sm leading-relaxed mb-8 opacity-80">
+              Sizning ilmiy yutuqlaringiz va nashr etilgan maqolalaringiz bazasini avtomatik tahlil qiling.
+            </p>
           </div>
-          <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
+          <button className="w-full bg-white text-blue-700 py-4 rounded-2xl font-black shadow-xl hover:-translate-y-1 transition-all">
+            Hujjatlarni yuklash
+          </button>
         </div>
-      </div>
+      </section>
     </div>
   );
 };

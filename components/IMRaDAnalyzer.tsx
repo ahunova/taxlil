@@ -23,149 +23,104 @@ const IMRaDAnalyzer: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10 animate-in fade-in duration-700">
+      {/* Visual Header */}
+      <div className="relative h-64 w-full rounded-[3rem] overflow-hidden shadow-lg">
+        <img 
+          src="https://images.unsplash.com/photo-1454165833767-027ffea9e778?q=80&w=1200&auto=format&fit=crop" 
+          className="absolute inset-0 w-full h-full object-cover" 
+          alt="Analysis"
+        />
+        <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] flex flex-col justify-center px-12">
+           <h2 className="text-4xl font-bold text-white mb-2">IMRaD Struktura Tahlili</h2>
+           <p className="text-slate-200 max-w-xl">Maqolangiz xalqaro talablarga qanchalik mos? Bizning AI tizimimiz bir necha soniya ichida mantiqiy xatolarni topadi.</p>
+        </div>
+      </div>
+
       <div className="flex gap-4 mb-2">
         <button 
           onClick={() => setActiveTab('tool')}
-          className={`px-4 py-2 rounded-lg font-bold text-sm transition-all ${activeTab === 'tool' ? 'bg-blue-600 text-white' : 'bg-white text-slate-500 border border-slate-200 hover:bg-slate-50'}`}
+          className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${activeTab === 'tool' ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' : 'bg-white text-slate-500 border border-slate-200 hover:bg-slate-50'}`}
         >
           Tahlil Asbobi
         </button>
         <button 
           onClick={() => setActiveTab('logic')}
-          className={`px-4 py-2 rounded-lg font-bold text-sm transition-all ${activeTab === 'logic' ? 'bg-blue-600 text-white' : 'bg-white text-slate-500 border border-slate-200 hover:bg-slate-50'}`}
+          className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${activeTab === 'logic' ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' : 'bg-white text-slate-500 border border-slate-200 hover:bg-slate-50'}`}
         >
           Algoritm Mantiqi
         </button>
       </div>
 
       {activeTab === 'tool' ? (
-        <>
-          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-200">
-            <h2 className="text-2xl font-bold mb-4 text-slate-800">IMRaD Struktura Analizi</h2>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 bg-white p-10 rounded-[2.5rem] shadow-sm border border-slate-200">
+            <h3 className="text-xl font-bold mb-6 text-slate-800">Tadqiqot matnini kiritish</h3>
             <textarea
               value={text}
               onChange={(e) => setText(e.target.value)}
-              placeholder="Maqola matnini bu yerga kiriting (Introduction, Methods, Results, Discussion qismlarini o'z ichiga olgan holda)..."
-              className="w-full h-64 p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none font-serif text-lg leading-relaxed"
+              placeholder="Introduction, Methods, Results yoki Discussion bo'limlarini bu yerga joylang..."
+              className="w-full h-80 p-6 border border-slate-100 rounded-3xl bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 outline-none transition-all resize-none font-serif text-lg leading-relaxed shadow-inner"
             />
             <button
               onClick={handleAnalyze}
               disabled={loading || !text}
-              className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 disabled:bg-slate-300 transition-all shadow-lg shadow-blue-600/20"
+              className="mt-8 px-10 py-4 bg-slate-900 text-white rounded-2xl font-black hover:bg-blue-600 disabled:bg-slate-300 transition-all shadow-xl"
             >
-              {loading ? 'Tahlil qilinmoqda...' : 'Strukturani aniqlash'}
+              {loading ? 'AI ishlamoqda...' : 'Strukturani tekshirish'}
             </button>
           </div>
 
-          {results.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-4">
-              {results.map((res, i) => (
-                <div key={i} className="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-blue-500 border border-slate-200">
-                  <div className="flex justify-between items-start mb-3">
-                    <h3 className="font-bold text-lg text-slate-800">{res.section}</h3>
-                    <span className="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded font-bold">
-                      Ishonch: {(res.confidence * 100).toFixed(0)}%
-                    </span>
-                  </div>
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="text-sm font-semibold text-slate-600 mb-1">Tavsiyalar:</h4>
-                      <ul className="list-disc list-inside text-sm text-slate-700 space-y-1">
-                        {res.suggestions.map((s, idx) => <li key={idx}>{s}</li>)}
-                      </ul>
-                    </div>
-                    {res.missingElements.length > 0 && (
-                      <div className="bg-amber-50 p-3 rounded-lg border border-amber-100">
-                        <h4 className="text-sm font-semibold text-amber-700 mb-1 italic">Yetishmayotgan elementlar:</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {res.missingElements.map((e, idx) => (
-                            <span key={idx} className="bg-white border border-amber-200 text-amber-800 text-[10px] px-2 py-0.5 rounded-full font-medium">
-                              {e}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </>
-      ) : (
-        <div className="bg-white p-10 rounded-3xl shadow-sm border border-slate-200 animate-in fade-in zoom-in-95 duration-300">
-          <h2 className="text-3xl font-bold mb-6 text-slate-800 serif">IMRaD Bo'limlarini Aniqlash Algoritmi</h2>
-          
-          <div className="space-y-8">
-            <section>
-              <h3 className="text-xl font-bold text-slate-700 mb-3 underline decoration-blue-500 underline-offset-4">Algoritm Mantiqi</h3>
-              <p className="text-slate-600 leading-relaxed mb-4">
-                Tizim akademik matndagi semantik o'zgarish nuqtalarini aniqlash uchun uch bosqichli mantiqdan foydalanadi:
-              </p>
-              <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <li className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                  <span className="text-blue-600 font-bold block mb-1">1. Leksik Tahlil</span>
-                  <span className="text-sm text-slate-500 text-justify">Terminologik klasterlarni (masalan, "statistical significance" -> Results) aniqlash.</span>
-                </li>
-                <li className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                  <span className="text-blue-600 font-bold block mb-1">2. Strukturaviy Mapping</span>
-                  <span className="text-sm text-slate-500 text-justify">Bo'lim sarlavhalari va paragraflar joylashuvini xalqaro standartlar bilan solishtirish.</span>
-                </li>
-                <li className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                  <span className="text-blue-600 font-bold block mb-1">3. Semantik Integratsiya</span>
-                  <span className="text-sm text-slate-500 text-justify">Matn mazmunining mantiqiy maqsadini (Description vs. Argumentation) aniqlash.</span>
-                </li>
-              </ul>
-            </section>
-
-            <section>
-              <h3 className="text-xl font-bold text-slate-700 mb-4">Yondashuvlar Solishtiruvi</h3>
-              <div className="overflow-hidden rounded-2xl border border-slate-200">
-                <table className="w-full text-left">
-                  <thead className="bg-slate-50 text-slate-500 text-xs font-bold uppercase tracking-widest">
-                    <tr>
-                      <th className="px-6 py-4">Xususiyat</th>
-                      <th className="px-6 py-4">Qidaviy (Rule-based)</th>
-                      <th className="px-6 py-4">AI (Large Language Model)</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-200 text-sm">
-                    <tr>
-                      <td className="px-6 py-4 font-bold text-slate-700">Mantiq asosi</td>
-                      <td className="px-6 py-4 text-slate-500 italic">Regex, kalit so'zlar, sarlavhalar.</td>
-                      <td className="px-6 py-4 text-blue-700 font-medium">Semantik kontekst va neyron tarmoqlar.</td>
-                    </tr>
-                    <tr>
-                      <td className="px-6 py-4 font-bold text-slate-700">Moslashuvchanlik</td>
-                      <td className="px-6 py-4 text-slate-500">Past. Faqat qat'iy formatda ishlaydi.</td>
-                      <td className="px-6 py-4 text-blue-700 font-medium">Yuqori. Erkin va noan'anaviy matnni tushunadi.</td>
-                    </tr>
-                    <tr>
-                      <td className="px-6 py-4 font-bold text-slate-700">Xatolik darajasi</td>
-                      <td className="px-6 py-4 text-slate-500">Sarlavha bo'lmasa, butunlay adashadi.</td>
-                      <td className="px-6 py-4 text-blue-700 font-medium">Kam. Matn mazmunidan bo'limni anglay oladi.</td>
-                    </tr>
-                    <tr>
-                      <td className="px-6 py-4 font-bold text-slate-700">DSc talablari</td>
-                      <td className="px-6 py-4 text-slate-500">Faqat texnik tekshiruv uchun mos.</td>
-                      <td className="px-6 py-4 text-blue-700 font-medium">Metodologik va mantiqiy tahlilga qodir.</td>
-                    </tr>
-                  </tbody>
-                </table>
+          <div className="space-y-6">
+            {loading ? (
+              <div className="bg-white p-10 rounded-[2.5rem] border border-slate-200 flex flex-col items-center justify-center h-full space-y-4">
+                 <div className="h-12 w-12 border-4 border-slate-100 border-t-blue-600 rounded-full animate-spin"></div>
+                 <p className="text-slate-400 font-bold text-xs uppercase tracking-widest">Tahlil jarayoni...</p>
               </div>
-            </section>
-
-            <div className="bg-blue-600 p-6 rounded-2xl text-white shadow-lg">
-              <h4 className="font-bold mb-2 flex items-center gap-2">
-                <span className="text-xl">💡</span> Tizim xulosasi
-              </h4>
-              <p className="text-sm text-blue-50 leading-relaxed">
-                AcademiaAI ikkala yondashuvni birlashtiradi: Qoidaviy mantiq orqali hujjatning texnik karkasini ushlab turadi, 
-                Gemini AI modeli yordamida esa matnning chuqur semantik tahlilini amalga oshirib, IMRaD mantiqiy bog'liqligini baholaydi.
-              </p>
-            </div>
+            ) : results.length > 0 ? (
+               results.map((res, i) => (
+                <div key={i} className="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 border-l-8 border-l-blue-600 animate-in fade-in slide-in-from-right-4">
+                   <div className="flex justify-between items-center mb-4">
+                      <h4 className="font-bold text-slate-900">{res.section}</h4>
+                      <span className="text-xs font-black text-blue-600 bg-blue-50 px-2 py-1 rounded-lg">{(res.confidence * 100).toFixed(0)}%</span>
+                   </div>
+                   <div className="space-y-3">
+                      <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">AI Tavsiyalari:</p>
+                      <ul className="text-sm text-slate-600 space-y-2">
+                        {res.suggestions.map((s, idx) => (
+                          <li key={idx} className="flex gap-2">
+                            <span className="text-blue-500">•</span> {s}
+                          </li>
+                        ))}
+                      </ul>
+                   </div>
+                </div>
+               ))
+            ) : (
+              <div className="bg-slate-50 p-10 rounded-[2.5rem] border border-dashed border-slate-300 flex flex-col items-center justify-center h-full text-center">
+                 <div className="text-5xl mb-4 opacity-20">🔍</div>
+                 <p className="text-slate-400 text-sm font-medium">Natijalar bu yerda paydo bo'ladi. Matnni kiriting va tahlil tugmasini bosing.</p>
+              </div>
+            )}
           </div>
+        </div>
+      ) : (
+        <div className="bg-white p-12 rounded-[3rem] shadow-sm border border-slate-200">
+           <h3 className="text-3xl font-bold mb-8">Neyron Tarmoq Mantiqi</h3>
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <div className="space-y-6">
+                 <p className="text-slate-600 leading-relaxed text-lg">PhD InnoVision tizimi akademik matnlarni tahlil qilishda Gemini 3 Pro modelidan foydalanadi. Bizning algoritmimiz matnni nafaqat so'zlar darajasida, balki mantiqiy bog'liqliklar darajasida ham tekshiradi.</p>
+                 <div className="p-6 bg-blue-50 rounded-3xl border border-blue-100">
+                    <h4 className="font-bold text-blue-900 mb-2">SII Index (Scientific Integrity Index)</h4>
+                    <p className="text-sm text-blue-700">Bu ko'rsatkich maqolangizning IMRaD bo'limlari orasidagi semantik zanjir qanchalik mustahkamligini anglatadi.</p>
+                 </div>
+              </div>
+              <img 
+                src="https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=800&auto=format&fit=crop" 
+                className="w-full h-80 object-cover rounded-[2rem] shadow-2xl" 
+                alt="AI Tech"
+              />
+           </div>
         </div>
       )}
     </div>
